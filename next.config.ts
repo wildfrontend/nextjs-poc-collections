@@ -3,6 +3,7 @@ import type { NextConfig } from 'next';
 import envVariable from './config/env';
 
 const nextConfig: NextConfig = {
+  reactStrictMode: true,
   webpack(config) {
     // 找出處理 SVG 的原本規則
     const fileLoaderRule = config.module.rules.find((rule: any) =>
