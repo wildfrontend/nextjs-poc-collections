@@ -84,7 +84,7 @@ export const sections: Section[] = [
   {
     title: 'Demo',
     links: [
-      { href: '/demo/countdown', label: 'Countdown 測試頁' },
+      { href: '/demo/running-clock', label: 'Countdown 測試頁' },
       { href: '/demo/promise-lock', label: 'PromiseLock 測試頁' },
       { href: '/demo/3d-earth', label: '3D 地球 Demo' },
     ],
