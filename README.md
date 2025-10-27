@@ -65,6 +65,7 @@
 - [Countdown 測試頁](https://nextjs-poc-collections.vercel.app/demo/countdown)
 - [PromiseLock 測試頁](https://nextjs-poc-collections.vercel.app/demo/promise-lock)
 - [3D 地球 Demo](https://nextjs-poc-collections.vercel.app/demo/3d-earth)
+- [Voice Input Demo](https://nextjs-poc-collections.vercel.app/demo/voice-input)
 
 ---
 
