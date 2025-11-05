@@ -1,7 +1,8 @@
 'use client';
 
-import SlowTimerDemo from '@/components/slow-timer';
 import { Container, Typography } from '@mui/material';
+
+import SlowTimerDemo from '@/components/slow-timer';
 
 const Page = () => {
   return (

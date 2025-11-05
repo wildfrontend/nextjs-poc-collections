@@ -10,19 +10,19 @@ import {
   ListItemText,
   Paper,
   Stack,
-  Typography,
   TextField,
+  Typography,
 } from '@mui/material';
 import { useMemo, useState } from 'react';
 
 import { ConfirmModal } from '@/components/demo-modal/ConfirmModal';
+import { ModalPortal } from '@/components/demo-modal/ModalPortal';
 import {
   ModalProvider,
   useModalController,
   useModalManager,
   useModalSlot,
 } from '@/components/demo-modal/ModalProvider';
-import { ModalPortal } from '@/components/demo-modal/ModalPortal';
 import { SampleModal } from '@/components/demo-modal/SampleModal';
 
 interface DemoPayload {
@@ -42,7 +42,10 @@ interface NestedNotePayload {
   initialNote: string;
 }
 
-const usePreviousModalPayload = <TPayload,>(namespace: string, currentIndex?: number) => {
+const usePreviousModalPayload = <TPayload,>(
+  namespace: string,
+  currentIndex?: number
+) => {
   const { stack } = useModalManager();
 
   return useMemo(() => {
@@ -76,19 +79,19 @@ const ProfileModalDemo = () => {
     <>
       <Button
         fullWidth
-        variant="outlined"
         onClick={handleOpen}
         sx={{ borderRadius: 2, py: 1.5 }}
+        variant="outlined"
       >
         開啟資料 Modal
       </Button>
       {slot && (
         <SampleModal
-          title={slot.payload?.title ?? '未命名 Modal'}
           description={slot.payload?.description ?? '沒有提供描述內容'}
+          index={slot.index}
           onClose={() => slot.close()}
           onConfirm={() => slot.resolveWith(() => true)}
-          index={slot.index}
+          title={slot.payload?.title ?? '未命名 Modal'}
         />
       )}
     </>
@@ -113,24 +116,26 @@ const ConfirmModalDemo = ({
   return (
     <>
       <Button
-        fullWidth
-        variant="outlined"
         color="success"
+        fullWidth
         onClick={handleOpen}
         sx={{ borderRadius: 2, py: 1.5 }}
+        variant="outlined"
       >
         開啟確認 Modal
       </Button>
       {slot && (
         <ConfirmModal
+          index={slot.index}
+          loading={slot.isResolving}
           message={slot.payload?.message ?? '需要確認的訊息'}
           onCancel={() => slot.close(false)}
-          onConfirm={() => slot.resolveWith(async () => {
-            await new Promise((resolve) => setTimeout(resolve, 800));
-            return true;
-          })}
-          loading={slot.isResolving}
-          index={slot.index}
+          onConfirm={() =>
+            slot.resolveWith(async () => {
+              await new Promise((resolve) => setTimeout(resolve, 800));
+              return true;
+            })
+          }
         />
       )}
     </>
@@ -156,20 +161,20 @@ const LogModalDemo = ({ onOpen }: { onOpen: (timestamp: string) => void }) => {
   return (
     <>
       <Button
-        fullWidth
-        variant="outlined"
         color="secondary"
+        fullWidth
         onClick={handleOpen}
         sx={{ borderRadius: 2, py: 1.5 }}
+        variant="outlined"
       >
         開啟紀錄 Modal
       </Button>
       {slot && (
         <SampleModal
-          title={slot.payload?.title ?? '操作已記錄'}
           description={slot.payload?.description ?? '無資訊'}
-          onClose={() => slot.close()}
           index={slot.index}
+          onClose={() => slot.close()}
+          title={slot.payload?.title ?? '操作已記錄'}
         />
       )}
     </>
@@ -196,7 +201,7 @@ const NestedProfileModal = ({
   isEditing: boolean;
 }) => {
   return (
-    <ModalPortal onClose={onClose} index={index}>
+    <ModalPortal index={index} onClose={onClose}>
       <Paper
         elevation={6}
         sx={{
@@ -206,21 +211,21 @@ const NestedProfileModal = ({
           borderRadius: 3,
         }}
       >
-        <Typography variant="h6" fontWeight={600}>
+        <Typography fontWeight={600} variant="h6">
           設定使用者備註
         </Typography>
-        <Typography variant="body2" color="text.secondary" sx={{ mt: 1.5 }}>
+        <Typography color="text.secondary" sx={{ mt: 1.5 }} variant="body2">
           這個範例示範如何在巢狀 Modal 之間共享資料。
         </Typography>
         <Stack spacing={2.5} sx={{ mt: 3 }}>
           <Stack spacing={0.5}>
-            <Typography variant="subtitle2" color="text.secondary">
+            <Typography color="text.secondary" variant="subtitle2">
               使用者
             </Typography>
-            <Typography variant="body1" fontWeight={600}>
+            <Typography fontWeight={600} variant="body1">
               {user.name}
             </Typography>
-            <Typography variant="body2" color="text.secondary">
+            <Typography color="text.secondary" variant="body2">
               {user.email} ・ {user.department}
             </Typography>
           </Stack>
@@ -232,35 +237,52 @@ const NestedProfileModal = ({
               border: (theme) => `1px solid ${theme.palette.divider}`,
             }}
           >
-            <Stack direction="row" justifyContent="space-between" alignItems="center">
-              <Typography variant="subtitle2" color="text.secondary">
+            <Stack
+              alignItems="center"
+              direction="row"
+              justifyContent="space-between"
+            >
+              <Typography color="text.secondary" variant="subtitle2">
                 備註
               </Typography>
               <Button
-                size="small"
-                variant="outlined"
-                onClick={onEditNote}
-                sx={{ borderRadius: 999 }}
                 disabled={isEditing}
+                onClick={onEditNote}
+                size="small"
+                sx={{ borderRadius: 999 }}
+                variant="outlined"
               >
                 編輯備註
               </Button>
             </Stack>
-            <Typography variant="body2" color={note ? 'text.primary' : 'text.disabled'}>
+            <Typography
+              color={note ? 'text.primary' : 'text.disabled'}
+              variant="body2"
+            >
               {note || '尚未設定備註'}
             </Typography>
           </Stack>
         </Stack>
-        <Stack direction="row" spacing={1.5} justifyContent="flex-end" sx={{ mt: 4 }}>
-          <Button variant="outlined" onClick={onClose} sx={{ borderRadius: 999 }} disabled={isConfirming}>
+        <Stack
+          direction="row"
+          justifyContent="flex-end"
+          spacing={1.5}
+          sx={{ mt: 4 }}
+        >
+          <Button
+            disabled={isConfirming}
+            onClick={onClose}
+            sx={{ borderRadius: 999 }}
+            variant="outlined"
+          >
             取消
           </Button>
           <Button
-            variant="contained"
             color="primary"
+            disabled={isConfirming}
             onClick={onConfirm}
             sx={{ borderRadius: 999 }}
-            disabled={isConfirming}
+            variant="contained"
           >
             {isConfirming ? '儲存中…' : '儲存'}
           </Button>
@@ -284,10 +306,13 @@ const NoteEditorModal = ({
   onSave: (value: string) => void;
 }) => {
   const [value, setValue] = useState(defaultValue);
-  const parentPayload = usePreviousModalPayload<NestedProfilePayload>(namespace, index);
+  const parentPayload = usePreviousModalPayload<NestedProfilePayload>(
+    namespace,
+    index
+  );
 
   return (
-    <ModalPortal onClose={onCancel} index={index}>
+    <ModalPortal index={index} onClose={onCancel}>
       <Paper
         elevation={6}
         sx={{
@@ -297,32 +322,41 @@ const NoteEditorModal = ({
           borderRadius: 3,
         }}
       >
-        <Typography variant="h6" fontWeight={600}>
+        <Typography fontWeight={600} variant="h6">
           更新備註
         </Typography>
-        <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+        <Typography color="text.secondary" sx={{ mt: 1 }} variant="body2">
           上一層 Modal 的使用者：{parentPayload?.user.name ?? '未知使用者'}（
           {parentPayload?.user.email ?? '未知信箱'}）
         </Typography>
         <TextField
           fullWidth
-          multiline
-          minRows={3}
           maxRows={6}
-          value={value}
+          minRows={3}
+          multiline
           onChange={(event) => setValue(event.target.value)}
-          sx={{ mt: 3 }}
           placeholder="輸入要保存的備註內容"
+          sx={{ mt: 3 }}
+          value={value}
         />
-        <Stack direction="row" spacing={1.5} justifyContent="flex-end" sx={{ mt: 4 }}>
-          <Button variant="outlined" onClick={onCancel} sx={{ borderRadius: 999 }}>
+        <Stack
+          direction="row"
+          justifyContent="flex-end"
+          spacing={1.5}
+          sx={{ mt: 4 }}
+        >
+          <Button
+            onClick={onCancel}
+            sx={{ borderRadius: 999 }}
+            variant="outlined"
+          >
             取消
           </Button>
           <Button
-            variant="contained"
             color="primary"
             onClick={() => onSave(value)}
             sx={{ borderRadius: 999 }}
+            variant="contained"
           >
             儲存備註
           </Button>
@@ -372,40 +406,50 @@ const NestedModalDemo = () => {
   return (
     <>
       <Button
-        fullWidth
-        variant="outlined"
         color="info"
+        fullWidth
         onClick={handleOpen}
         sx={{ borderRadius: 2, py: 1.5 }}
+        variant="outlined"
       >
         開啟巢狀 Modal
       </Button>
-      <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 1.5 }}>
+      <Typography
+        color="text.secondary"
+        sx={{ display: 'block', mt: 1.5 }}
+        variant="caption"
+      >
         最後儲存的備註：{lastSavedNote ?? '尚未儲存'}
       </Typography>
 
       {profileSlot && (
         <NestedProfileModal
-          user={profileSlot.payload?.user ?? { name: '未知使用者', email: '未知信箱', department: '未提供部門' }}
+          index={profileSlot.index}
+          isConfirming={profileSlot.isResolving}
+          isEditing={Boolean(noteSlot)}
           note={note}
-          onEditNote={() => {
-            void handleEditNote();
-          }}
           onClose={() => profileSlot.close()}
           onConfirm={() => {
             void profileSlot.resolveWith(() => note);
           }}
-          index={profileSlot.index}
-          isConfirming={profileSlot.isResolving}
-          isEditing={Boolean(noteSlot)}
+          onEditNote={() => {
+            void handleEditNote();
+          }}
+          user={
+            profileSlot.payload?.user ?? {
+              name: '未知使用者',
+              email: '未知信箱',
+              department: '未提供部門',
+            }
+          }
         />
       )}
 
       {noteSlot && (
         <NoteEditorModal
-          namespace={namespace}
-          index={noteSlot.index}
           defaultValue={noteSlot.payload?.initialNote ?? ''}
+          index={noteSlot.index}
+          namespace={namespace}
           onCancel={() => noteSlot.close()}
           onSave={(value) => {
             void noteSlot.resolveWith(() => value);
@@ -424,18 +468,18 @@ const DemoContent = () => {
   };
 
   return (
-    <Stack spacing={4} maxWidth={640} mx="auto">
+    <Stack maxWidth={640} mx="auto" spacing={4}>
       <Box>
-        <Typography variant="h4" fontWeight={700} color="text.primary">
+        <Typography color="text.primary" fontWeight={700} variant="h4">
           Modal Provider PoC
         </Typography>
-        <Typography variant="body2" color="text.secondary" sx={{ mt: 1.5 }}>
+        <Typography color="text.secondary" sx={{ mt: 1.5 }} variant="body2">
           透過 Context 控制 Modal 的開啟與關閉，並以 payload
           傳遞資料，以便在不同頁面共用相同的對話框。
         </Typography>
       </Box>
 
-      <Paper variant="outlined" sx={{ p: 3 }}>
+      <Paper sx={{ p: 3 }} variant="outlined">
         <Grid container spacing={2}>
           <Grid size={{ xs: 12, sm: 4 }}>
             <ProfileModalDemo />
@@ -461,18 +505,18 @@ const DemoContent = () => {
         </Grid>
       </Paper>
 
-      <Paper variant="outlined" sx={{ p: 3 }}>
-        <Typography variant="subtitle1" fontWeight={600} color="text.primary">
+      <Paper sx={{ p: 3 }} variant="outlined">
+        <Typography color="text.primary" fontWeight={600} variant="subtitle1">
           最近操作紀錄
         </Typography>
         {logs.length === 0 ? (
-          <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
+          <Typography color="text.secondary" sx={{ mt: 2 }} variant="body2">
             暫無操作紀錄，點擊上方按鈕看看效果。
           </Typography>
         ) : (
           <List dense sx={{ mt: 1 }}>
             {logs.map((log, index) => (
-              <ListItem key={index} disablePadding>
+              <ListItem disablePadding key={index}>
                 <ListItemText primary={log} />
               </ListItem>
             ))}

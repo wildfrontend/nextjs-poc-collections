@@ -1,7 +1,8 @@
-"use client";
+'use client';
 
-import { useMemo, useState } from "react";
-import { useScaledTime } from "./hook";
+import { useMemo, useState } from 'react';
+
+import { useScaledTime } from './hook';
 
 const formatMs = (ms: number) => {
   const totalMs = Math.max(0, Math.floor(ms));
@@ -9,9 +10,9 @@ const formatMs = (ms: number) => {
   const minutes = Math.floor(totalSeconds / 60);
   const seconds = totalSeconds % 60;
   const millis = totalMs % 1000;
-  const mm = String(minutes).padStart(2, "0");
-  const ss = String(seconds).padStart(2, "0");
-  const mmm = String(millis).padStart(3, "0");
+  const mm = String(minutes).padStart(2, '0');
+  const ss = String(seconds).padStart(2, '0');
+  const mmm = String(millis).padStart(3, '0');
   return `${mm}:${ss}.${mmm}`;
 };
 
@@ -28,7 +29,8 @@ function TimerCore({
   const display = useMemo(() => formatMs(ms), [ms]);
   return (
     <div>
-      <strong>Scaled Time:</strong> <span data-testid="slow-timer-ms">{display}</span>
+      <strong>Scaled Time:</strong>{' '}
+      <span data-testid="slow-timer-ms">{display}</span>
     </div>
   );
 }
@@ -48,14 +50,14 @@ const SlowTimerDemo: React.FC = () => {
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-      <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+      <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
         <label>
           Speed:
           <select
-            value={speed}
             onChange={(e) => setSpeed(Number(e.target.value))}
             style={{ marginLeft: 8 }}
+            value={speed}
           >
             <option value={0.25}>0.25x</option>
             <option value={0.5}>0.5x</option>
@@ -64,13 +66,18 @@ const SlowTimerDemo: React.FC = () => {
             <option value={4}>4x</option>
           </select>
         </label>
-        <button onClick={onStart} disabled={running}>
+        <button disabled={running} onClick={onStart}>
           START
         </button>
-        <button onClick={onPauseResume}>{running ? "PAUSE" : "RESUME"}</button>
+        <button onClick={onPauseResume}>{running ? 'PAUSE' : 'RESUME'}</button>
         <button onClick={onReset}>RESET</button>
       </div>
-      <TimerCore key={seed} running={running} speed={speed} initialMs={initialMs} />
+      <TimerCore
+        initialMs={initialMs}
+        key={seed}
+        running={running}
+        speed={speed}
+      />
     </div>
   );
 };

@@ -85,17 +85,17 @@ const RunningClock: React.FC = () => {
     <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
       <label>
         <input
+          onChange={(e) => setMinutes(Number(e.target.value || 0))}
           type="number"
           value={minutes}
-          onChange={(e) => setMinutes(Number(e.target.value || 0))}
         />
         Minutes
       </label>
       <label>
         <input
+          onChange={(e) => setSeconds(Number(e.target.value || 0))}
           type="number"
           value={seconds}
-          onChange={(e) => setSeconds(Number(e.target.value || 0))}
         />
         Seconds
       </label>

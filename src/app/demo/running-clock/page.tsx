@@ -1,7 +1,8 @@
 'use client';
 
-import RunningClockDemo from '@/components/runing-clock';
 import { Container, Typography } from '@mui/material';
+
+import RunningClockDemo from '@/components/runing-clock';
 
 const Page = () => {
   return (

@@ -6,10 +6,11 @@ import SendIcon from '@mui/icons-material/Send';
 import { Box, CircularProgress, IconButton, Typography } from '@mui/material';
 import { useState } from 'react';
 
-import { useRecordVoice } from './record-voice';
 import { VoicePreview } from './preview';
+import { useRecordVoice } from './record-voice';
 
-const formatTime = (s: number) => `${Math.floor(s / 60)}:${(s % 60).toString().padStart(2, '0')}`;
+const formatTime = (s: number) =>
+  `${Math.floor(s / 60)}:${(s % 60).toString().padStart(2, '0')}`;
 
 export interface VoiceInputProps {
   roomId: string;
@@ -17,7 +18,16 @@ export interface VoiceInputProps {
 }
 
 export const VoiceInput = ({ roomId, onClose }: VoiceInputProps) => {
-  const { isStopped, isRecording, isDisabled, audioBlob, audioUrl, seconds, reset, stop } = useRecordVoice();
+  const {
+    isStopped,
+    isRecording,
+    isDisabled,
+    audioBlob,
+    audioUrl,
+    seconds,
+    reset,
+    stop,
+  } = useRecordVoice();
   const [isUploading, setIsUploading] = useState(false);
 
   // 停止（關麥）
@@ -134,7 +144,11 @@ export const VoiceInput = ({ roomId, onClose }: VoiceInputProps) => {
             },
           }}
         >
-          {isUploading ? <CircularProgress color="inherit" size={20} /> : <SendIcon />}
+          {isUploading ? (
+            <CircularProgress color="inherit" size={20} />
+          ) : (
+            <SendIcon />
+          )}
         </IconButton>
       ) : (
         <IconButton

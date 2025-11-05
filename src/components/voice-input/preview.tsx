@@ -39,8 +39,16 @@ export const VoicePreview = ({ audioUrl }: VoicePreviewProps) => {
 
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-      <IconButton onClick={togglePlay} size="small" sx={{ color: 'primary.main' }}>
-        {isPlaying ? <StopIcon fontSize="small" /> : <PlayArrowIcon fontSize="small" />}
+      <IconButton
+        onClick={togglePlay}
+        size="small"
+        sx={{ color: 'primary.main' }}
+      >
+        {isPlaying ? (
+          <StopIcon fontSize="small" />
+        ) : (
+          <PlayArrowIcon fontSize="small" />
+        )}
       </IconButton>
     </Box>
   );

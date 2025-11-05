@@ -7,11 +7,15 @@ const IncrementButton = () => {
   );
 };
 
-const FetchUserListItem = memo(
-  ({ user }: { user: { id: number; username: string } }) => {
-    return <li>{user.username}</li>;
-  }
-);
+const FetchUserListItem = memo(function FetchUserListItemComponent({
+  user,
+}: {
+  user: { id: number; username: string };
+}) {
+  return <li>{user.username}</li>;
+});
+
+FetchUserListItem.displayName = 'FetchUserListItem';
 
 const FetchUserList = () => {
   const [users, setUsers] = useState([]);
@@ -36,7 +40,6 @@ const FetchUserList = () => {
 };
 
 const UserList = () => {
-    
   return (
     <div>
       <h2>User List</h2>
